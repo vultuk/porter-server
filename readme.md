@@ -1,6 +1,18 @@
 # Porter Server
 
-> ${DESCRIPTION}
+> Porter intends to be a package enabling microservices and APIs to be created and
+put online with the very minimum of effort.
+
+> The package enables full, and easy, access to:
+* A web server (Express)
+* Easy routing setups (Basic and Resources)
+* Database access (Postgres)
+* Interaction with Pusher
+* Simple Controller Classes
+* Command line logging
+
+> Planned future additions include
+* Redis Queues
 
 [![NPM Version][npm-image]][npm-url]
 [![Build Status](https://travis-ci.org/vultuk/porter-server.svg?branch=master)](https://travis-ci.org/vultuk/porter-server)
@@ -14,7 +26,7 @@ npm i -S porter-server
 
 ## Usage
 
-TODO
+Full documentation is on the way soon!
 
 ## License
 
