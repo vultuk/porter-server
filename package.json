@@ -1,6 +1,6 @@
 {
   "name": "porter-server",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "A basic server to be used with Node including Server, Database and console logging.",
   "repository" :
   {
