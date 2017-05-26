@@ -3,6 +3,7 @@ import * as bodyParser from 'body-parser';
 import {Log} from "./log.service";
 import {ServerConfig} from "../types/configs/server-config.type";
 import {Request} from "../types/requests/request.type";
+import {ProxyController} from "../controllers/proxy.controller";
 
 export class Server {
     /**
@@ -33,22 +34,32 @@ export class Server {
             });
         }
 
-        this.serverConfig.routes.forEach(route => this.setSingleRoute(route));
-    }
-
-    private setSingleRoute(route: Request): void {
-        if (route.action.toLowerCase() === 'resource') {
-            this.setSingleRoute({endpoint: `${route.endpoint}`, action: 'get', controller: route.controller, method: 'all'} as Request);
-            this.setSingleRoute({endpoint: `${route.endpoint}`, action: 'post', controller: route.controller, method: 'post'} as Request);
-            this.setSingleRoute({endpoint: `${route.endpoint}/:id`, action: 'get', controller: route.controller, method: 'get'} as Request);
-            this.setSingleRoute({endpoint: `${route.endpoint}/:id`, action: 'put', controller: route.controller, method: 'put'} as Request);
-            this.setSingleRoute({endpoint: `${route.endpoint}/:id`, action: 'patch', controller: route.controller, method: 'patch'} as Request);
-            this.setSingleRoute({endpoint: `${route.endpoint}/:id`, action: 'delete', controller: route.controller, method: 'delete'} as Request);
-        } else {
-            this.app[route.method.toLowerCase()](`/${route.endpoint}`, (req,res) => new route.controller(req,res,this.serverConfig.database)[route.action]());
+        if (this.serverConfig.routes !== undefined && this.serverConfig.routes.length > 0) {
+            this.serverConfig.routes.forEach(route => this.setSingleRoute(route));
         }
     }
 
+    private setSingleRoute(route: Request): void {
+        try {
+            if (route.action.toLowerCase() === 'resource') {
+                this.setSingleRoute({endpoint: `${route.endpoint}`, action: 'get', controller: route.controller, method: 'all', proxyUrl: route.proxyUrl} as Request);
+                this.setSingleRoute({endpoint: `${route.endpoint}`, action: 'post', controller: route.controller, method: 'post', proxyUrl: route.proxyUrl} as Request);
+                this.setSingleRoute({endpoint: `${route.endpoint}/:id`, action: 'get', controller: route.controller, method: 'get', proxyUrl: route.proxyUrl} as Request);
+                this.setSingleRoute({endpoint: `${route.endpoint}/:id`, action: 'put', controller: route.controller, method: 'put', proxyUrl: route.proxyUrl} as Request);
+                this.setSingleRoute({endpoint: `${route.endpoint}/:id`, action: 'patch', controller: route.controller, method: 'patch', proxyUrl: route.proxyUrl} as Request);
+                this.setSingleRoute({endpoint: `${route.endpoint}/:id`, action: 'delete', controller: route.controller, method: 'delete', proxyUrl: route.proxyUrl} as Request);
+            } else {
+                if (route.proxyUrl !== undefined) {
+                    this.app[route.method.toLowerCase()](`/${route.endpoint}`, (req,res) => new ProxyController(req,res,this.serverConfig.database).setProxyUrl(route.proxyUrl).proxy());
+                } else {
+                    this.app[route.method.toLowerCase()](`/${route.endpoint}`, (req,res) => new route.controller(req,res,this.serverConfig.database)[route.action]());
+
+                }
+            }
+        } catch(error) {
+            Log.error(error);
+        }
+    }
 
     /**
      * Sets any headers we require for Cross Origin Requests.
