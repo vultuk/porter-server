@@ -5,6 +5,14 @@ import {LogMessage} from "../types/log-message.type";
  */
 export class Log {
 
+    static formatDate(timestamp: Date): string {
+        return `${('0' + timestamp.getDate()).slice(-2)}/${('0' + timestamp.getMonth()).slice(-2)}/${timestamp.getFullYear()}`;
+    }
+
+    static formatTime(timestamp: Date): string {
+        return `${('0' + timestamp.getHours()).slice(-2)}:${('0' + timestamp.getMinutes()).slice(-2)}:${('0' + timestamp.getSeconds()).slice(-2)}`;
+    }
+
     /**
      * Outputs the message to the console with the appropriate colors for the CLI.
      *
@@ -12,18 +20,7 @@ export class Log {
      */
     static output(message: LogMessage): void {
         // Generate a string holding the direct output of our message.
-        let fullMessage = `${message.color} ${[
-            message.timestamp.getDate() < 10 ? `0${message.timestamp.getDate()}` : message.timestamp.getDate(),
-            message.timestamp.getMonth() < 10 ? `0${message.timestamp.getMonth()}` : message.timestamp.getMonth(),
-            message.timestamp.getFullYear()
-        ].join('/')} ${[
-            message.timestamp.getHours() < 10 ? `0${message.timestamp.getHours()}` : message.timestamp.getHours(),
-            message.timestamp.getMinutes() < 10 ? `0${message.timestamp.getMinutes()}` : message.timestamp.getMinutes(),
-            message.timestamp.getSeconds() < 10 ? `0${message.timestamp.getSeconds()}` : message.timestamp.getSeconds()
-        ].join(':')} - [${message.type}] ${message.message}\x1b[0m`;
-
-        // Send the message to the console.
-        console.log(fullMessage);
+        console.log(`${message.color} ${this.formatDate(message.timestamp)} ${this.formatTime(message.timestamp)} - [${message.type}] ${message.message}\x1b[0m`);
     }
 
     /**
