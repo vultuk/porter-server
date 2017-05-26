@@ -1,8 +1,8 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import {Log} from "./log.service";
-import {PusherService} from "./pusher.service";
-import {Database} from "../models/database.model";
+import {ServerConfig} from "../types/configs/server-config.type";
+import {Request} from "../types/requests/request.type";
 
 export class Server {
     /**
@@ -10,7 +10,7 @@ export class Server {
      */
     private app: express.Express;
 
-    constructor(private port: number = 6012, private pusherService: PusherService, private db: Database) {
+    constructor(private serverConfig: ServerConfig) {
         this.app = express();
 
         this.app.use(bodyParser.urlencoded({extended: true}));
@@ -26,10 +26,30 @@ export class Server {
      * Todo: Refactor this into a separate class
      */
     private setRoutes() {
-        // Status route so we can check if the microservice is running
-        this.app.get('/status', (req, res) => {
-            return res.json({success: true, message: 'Service is active'});
-        });
+        // Status route so we can check if the service is running
+        if (this.serverConfig.serviceStatus && this.serverConfig.serviceStatus !== undefined) {
+            this.app.get(`/${this.serverConfig.serviceStatus}`, (req, res) => {
+                return res.json({success: true, message: 'Service is active'});
+            });
+        }
+
+        this.serverConfig.routes.forEach(route => this.setSingleRoute(route));
+    }
+
+    private setSingleRoute(route: Request): void {
+        if (route.action.toLowerCase() === 'resource') {
+            this.setSingleRoute({endpoint: `/${route.endpoint}`, action: 'get', controller: route.controller, method: 'all'} as Request);
+            this.setSingleRoute({endpoint: `/${route.endpoint}`, action: 'post', controller: route.controller, method: 'post'} as Request);
+            this.setSingleRoute({endpoint: `/${route.endpoint}/:id`, action: 'get', controller: route.controller, method: 'get'} as Request);
+            this.setSingleRoute({endpoint: `/${route.endpoint}/:id`, action: 'put', controller: route.controller, method: 'put'} as Request);
+            this.setSingleRoute({endpoint: `/${route.endpoint}/:id`, action: 'patch', controller: route.controller, method: 'patch'} as Request);
+            this.setSingleRoute({endpoint: `/${route.endpoint}/:id`, action: 'destroy', controller: route.controller, method: 'delete'} as Request);
+        } else {
+            this.app[route.action.toLowerCase()](
+                `/${route.endpoint}`,
+                (req,res) => new route.controller(req,res,this.serverConfig.database)[route.action]()
+            );
+        }
     }
 
 
@@ -49,6 +69,6 @@ export class Server {
      * Spools up the server on the required port.
      */
     private startServer() {
-        this.app.listen(this.port, () => Log.info('Server now running on port ' + this.port));
+        this.app.listen(this.serverConfig.port, () => Log.info('Server now running on port ' + this.serverConfig.port));
     }
 }
