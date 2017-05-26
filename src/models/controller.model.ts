@@ -9,7 +9,7 @@ export class Controller {
     }
 
     protected respondWithJson(response: SuccessfulResponse) {
-        this.response.status(response.code);
+        this.response.status(!response.code || response.code === undefined ? 200 : response.code);
         this.response.json({
             success: response.success,
             message: response.message,
@@ -20,7 +20,7 @@ export class Controller {
 
     protected respondWithError(response: UnsuccessfulResponse) {
         Log.error(response.data);
-        this.response.status(response.code);
+        this.response.status(!response.code || response.code === undefined ? 500 : response.code);
         this.response.json({
             success: response.success,
             message: !response.message || response.message === undefined ? "An unexpected error occurred" : response.message,
