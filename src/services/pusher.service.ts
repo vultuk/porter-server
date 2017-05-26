@@ -1,10 +1,11 @@
 import * as Pusher from 'pusher';
 import {Log} from "./log.service";
+import {PusherConfig} from "../types/pusher-config.type";
 
 export class PusherService {
     private connection = null;
 
-    constructor(private appId: string, private key: string, private secret: string, private cluster: string, private encrypted: boolean = true) {
+    constructor(private pusherConfig: PusherConfig) {
         if (this.initConnection()) {
             Log.info('Pusher Connection Established')
         } else {
@@ -21,11 +22,11 @@ export class PusherService {
     private initConnection(): boolean {
         if (this.connection === null) {
             this.connection = new Pusher({
-                appId: this.appId,
-                key: this.key,
-                secret: this.secret,
-                cluster: this.cluster,
-                encrypted: this.encrypted
+                appId: this.pusherConfig.appId,
+                key: this.pusherConfig.key,
+                secret: this.pusherConfig.secret,
+                cluster: this.pusherConfig.cluster,
+                encrypted: this.pusherConfig.encrypted
             });
         }
 
