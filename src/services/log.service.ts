@@ -11,22 +11,16 @@ export class Log {
      * @param message - LogMessage class populated with appropriate data.
      */
     static output(message: LogMessage): void {
-        // Create an array of date items we can join for a nicely formatted string.
-        let date = [
+        // Generate a string holding the direct output of our message.
+        let fullMessage = `${message.color} ${[
             message.timestamp.getDate() < 10 ? `0${message.timestamp.getDate()}` : message.timestamp.getDate(),
             message.timestamp.getMonth() < 10 ? `0${message.timestamp.getMonth()}` : message.timestamp.getMonth(),
             message.timestamp.getFullYear()
-        ];
-
-        // Create an array of time items we can join for a nicely formatted string.
-        let time = [
+        ].join('/')} ${[
             message.timestamp.getHours() < 10 ? `0${message.timestamp.getHours()}` : message.timestamp.getHours(),
             message.timestamp.getMinutes() < 10 ? `0${message.timestamp.getMinutes()}` : message.timestamp.getMinutes(),
             message.timestamp.getSeconds() < 10 ? `0${message.timestamp.getSeconds()}` : message.timestamp.getSeconds()
-        ];
-
-        // Generate a string holding the direct output of our message.
-        let fullMessage = `${message.color} ${date.join('/')} ${time.join(':')} - [${message.type}] ${message.message}\x1b[0m`;
+        ].join(':')} - [${message.type}] ${message.message}\x1b[0m`;
 
         // Send the message to the console.
         console.log(fullMessage);
