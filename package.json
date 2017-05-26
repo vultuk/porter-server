@@ -1,0 +1,25 @@
+{
+  "name": "porter-server",
+  "version": "1.0.0",
+  "description": "A basic server to be used with Node including Server, Database and console logging.",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "scripts": {
+    "compile": "rimraf dist && tsc -d",
+    "prepublish": "npm run compile"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "rimraf": "^2.5.4",
+    "typescript": "^2.1.4",
+    "@types/body-parser": "^1.16.3",
+    "@types/express": "^4.0.35",
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "pg-promise": "^5.6.7",
+    "pusher": "^1.5.1"
+  }
+}
