@@ -1,6 +1,6 @@
 import * as Pusher from 'pusher';
 import {Log} from "./log.service";
-import {PusherConfig} from "../types/pusher-config.type";
+import {PusherConfig} from "../types/configs/pusher-config.type";
 
 export class PusherService {
     private connection = null;

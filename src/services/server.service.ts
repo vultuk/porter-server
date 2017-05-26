@@ -38,17 +38,32 @@ export class Server {
 
     private setSingleRoute(route: Request): void {
         if (route.action.toLowerCase() === 'resource') {
-            this.setSingleRoute({endpoint: `/${route.endpoint}`, action: 'get', controller: route.controller, method: 'all'} as Request);
-            this.setSingleRoute({endpoint: `/${route.endpoint}`, action: 'post', controller: route.controller, method: 'post'} as Request);
-            this.setSingleRoute({endpoint: `/${route.endpoint}/:id`, action: 'get', controller: route.controller, method: 'get'} as Request);
-            this.setSingleRoute({endpoint: `/${route.endpoint}/:id`, action: 'put', controller: route.controller, method: 'put'} as Request);
-            this.setSingleRoute({endpoint: `/${route.endpoint}/:id`, action: 'patch', controller: route.controller, method: 'patch'} as Request);
-            this.setSingleRoute({endpoint: `/${route.endpoint}/:id`, action: 'destroy', controller: route.controller, method: 'delete'} as Request);
+            this.setSingleRoute({endpoint: `${route.endpoint}`, action: 'get', controller: route.controller, method: 'all'} as Request);
+            this.setSingleRoute({endpoint: `${route.endpoint}`, action: 'post', controller: route.controller, method: 'post'} as Request);
+            this.setSingleRoute({endpoint: `${route.endpoint}/:id`, action: 'get', controller: route.controller, method: 'get'} as Request);
+            this.setSingleRoute({endpoint: `${route.endpoint}/:id`, action: 'put', controller: route.controller, method: 'put'} as Request);
+            this.setSingleRoute({endpoint: `${route.endpoint}/:id`, action: 'patch', controller: route.controller, method: 'patch'} as Request);
+            this.setSingleRoute({endpoint: `${route.endpoint}/:id`, action: 'delete', controller: route.controller, method: 'delete'} as Request);
         } else {
-            this.app[route.action.toLowerCase()](
-                `/${route.endpoint}`,
-                (req,res) => new route.controller(req,res,this.serverConfig.database)[route.action]()
-            );
+            let thisAction = route.method.toLowerCase();
+            Log.info(`Registering route ${route.endpoint} for method ${route.method} with action ${thisAction}`);
+            switch(thisAction) {
+                case 'get':
+                    this.app.get(`/${route.endpoint}`, (req,res) => new route.controller(req,res,this.serverConfig.database)[route.action]());
+                    break;
+                case 'post':
+                    this.app.post(`/${route.endpoint}`, (req,res) => new route.controller(req,res,this.serverConfig.database)[route.action]());
+                    break;
+                case 'put':
+                    this.app.put(`/${route.endpoint}`, (req,res) => new route.controller(req,res,this.serverConfig.database)[route.action]());
+                    break;
+                case 'patch':
+                    this.app.patch(`/${route.endpoint}`, (req,res) => new route.controller(req,res,this.serverConfig.database)[route.action]());
+                    break;
+                case 'delete':
+                    this.app.delete(`/${route.endpoint}`, (req,res) => new route.controller(req,res,this.serverConfig.database)[route.action]());
+                    break;
+            }
         }
     }
 
