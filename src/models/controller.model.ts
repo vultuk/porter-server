@@ -1,28 +1,30 @@
 import {Log} from "../services/log.service";
 import {Database} from "./database.model";
+import {SuccessfulResponse} from "../types/responses/successful-response.type";
+import {UnsuccessfulResponse} from "../types/responses/unsuccessful-response.type";
 
 export class Controller {
     constructor(protected request: any, protected response: any, protected db: Database) {
         return this;
     }
 
-    protected respondWithJson(data: any, message: string, success: boolean = true, code: number = 200) {
-        this.response.status(code);
+    protected respondWithJson(response: SuccessfulResponse) {
+        this.response.status(response.code);
         this.response.json({
-            success: success,
-            message: message,
-            data: data
+            success: response.success,
+            message: response.message,
+            data: response.data
         });
         this.response.end();
     }
 
-    protected respondWithError(error: any, message: string = null, code: number = 500) {
-        Log.error(error);
-        this.response.status(code);
+    protected respondWithError(response: UnsuccessfulResponse) {
+        Log.error(response.data);
+        this.response.status(response.code);
         this.response.json({
-            success: false,
-            message: message !== null ? message : "An unexpected error occurred",
-            data: error
+            success: response.success,
+            message: !response.message || response.message === undefined ? "An unexpected error occurred" : response.message,
+            data: response.data
         });
         this.response.end();
     }
