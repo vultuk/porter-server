@@ -1,6 +1,6 @@
 {
   "name": "porter-server",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A basic server to be used with Node including Server, Database and console logging.",
   "repository": {
     "type": "git",
@@ -20,7 +20,9 @@
     "@types/express": "^4.0.35",
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.1",
+    "ejs": "^2.5.6",
     "express": "^4.15.2",
+    "express-markdown": "github:vultuk/express-markdown",
     "pg-promise": "^5.6.7",
     "pusher": "^1.5.1",
     "request": "^2.81.0",
