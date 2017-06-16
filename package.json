@@ -1,6 +1,6 @@
 {
   "name": "porter-server",
-  "version": "1.1.1",
+  "version": "1.1.4",
   "description": "A basic server to be used with Node including Server, Database and console logging.",
   "repository": {
     "type": "git",
@@ -27,6 +27,6 @@
     "pusher": "^1.5.1",
     "request": "^2.81.0",
     "rimraf": "^2.5.4",
-    "typescript": "^2.1.4"
+    "typescript": "^2.4.0"
   }
 }

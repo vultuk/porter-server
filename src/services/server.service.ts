@@ -57,9 +57,9 @@ export class Server {
                 this.setSingleRoute({endpoint: `${route.endpoint}/:id`, action: 'delete', controller: route.controller, method: 'delete', proxyUrl: route.proxyUrl} as Request);
             } else {
                 if (route.proxyUrl !== undefined) {
-                    this.app[route.method.toLowerCase()](`/${route.endpoint}`, (req,res) => new ProxyController(req,res,this.serverConfig.database).setProxyUrl(route.proxyUrl).proxy());
+                    this.app[route.method.toLowerCase()](`/${route.endpoint}`, (req,res) => new ProxyController(req,res,this.serverConfig.database, this.serverConfig.pusher).setProxyUrl(route.proxyUrl).proxy());
                 } else {
-                    this.app[route.method.toLowerCase()](`/${route.endpoint}`, (req,res) => new route.controller(req,res,this.serverConfig.database)[route.action]());
+                    this.app[route.method.toLowerCase()](`/${route.endpoint}`, (req,res) => new route.controller(req,res,this.serverConfig.database, this.serverConfig.pusher)[route.action]());
 
                 }
             }

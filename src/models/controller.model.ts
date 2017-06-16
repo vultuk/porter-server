@@ -2,9 +2,10 @@ import {Log} from "../services/log.service";
 import {Database} from "./database.model";
 import {SuccessfulResponse} from "../types/responses/successful-response.type";
 import {UnsuccessfulResponse} from "../types/responses/unsuccessful-response.type";
+import {PusherService} from "../services/pusher.service";
 
 export class Controller {
-    constructor(protected request: any, protected response: any, protected db: Database) {
+    constructor(protected request: any, protected response: any, protected db: Database = undefined, protected pusher: PusherService = undefined) {
         return this;
     }
 
