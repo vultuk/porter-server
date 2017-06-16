@@ -1,5 +1,6 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
+import * as markdown from 'express-markdown';
 import {Log} from "./log.service";
 import {ServerConfig} from "../types/configs/server-config.type";
 import {Request} from "../types/requests/request.type";
@@ -13,6 +14,12 @@ export class Server {
 
     constructor(private serverConfig: ServerConfig) {
         this.app = express();
+
+        if (this.serverConfig.markdown !== undefined && this.serverConfig.markdown.directory !== undefined) {
+            console.log(this.serverConfig.markdown);
+            this.app.set('view engine', 'ejs');
+            this.app.use(this.serverConfig.markdown.uri, require('express-markdown')(this.serverConfig.markdown));
+        }
 
         this.app.use(bodyParser.urlencoded({extended: true}));
         this.app.use(bodyParser.json());
