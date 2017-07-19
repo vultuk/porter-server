@@ -14,7 +14,8 @@ export class Controller {
         this.response.json({
             success: response.success,
             message: response.message,
-            data: response.data
+            data: response.data,
+            meta: response.meta
         });
         this.response.end();
     }
