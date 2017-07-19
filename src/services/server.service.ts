@@ -49,7 +49,7 @@ export class Server {
     private setSingleRoute(route: Request): void {
         try {
             if (route.action.toLowerCase() === 'resource') {
-                this.setSingleRoute({endpoint: `${route.endpoint}`, action: 'get', controller: route.controller, method: 'all', proxyUrl: route.proxyUrl} as Request);
+                this.setSingleRoute({endpoint: `${route.endpoint}`, action: 'all', controller: route.controller, method: 'all', proxyUrl: route.proxyUrl} as Request);
                 this.setSingleRoute({endpoint: `${route.endpoint}`, action: 'post', controller: route.controller, method: 'post', proxyUrl: route.proxyUrl} as Request);
                 this.setSingleRoute({endpoint: `${route.endpoint}/:id`, action: 'get', controller: route.controller, method: 'get', proxyUrl: route.proxyUrl} as Request);
                 this.setSingleRoute({endpoint: `${route.endpoint}/:id`, action: 'put', controller: route.controller, method: 'put', proxyUrl: route.proxyUrl} as Request);
