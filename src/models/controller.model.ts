@@ -30,4 +30,12 @@ export class Controller {
         this.response.end();
     }
 
+    protected getQuery(key: string, defaultValue: any = undefined): any {
+      return this.request.query[key] !== undefined ? this.request.query[key] : defaultValue;
+    }
+
+    protected getParam(key: string, defaultValue: any = undefined): any {
+      return this.request.param[key] !== undefined ? this.request.param[key] : defaultValue;
+    }
+
 }
