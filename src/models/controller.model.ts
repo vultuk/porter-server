@@ -36,7 +36,7 @@ export class Controller {
     }
 
     protected getParam(key: string, defaultValue: any = undefined): any {
-      return this.request.params[key] !== undefined ? this.request.param[key] : defaultValue;
+      return this.request.params[key] !== undefined ? this.request.params[key] : defaultValue;
     }
 
 }
