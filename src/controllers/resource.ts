@@ -1,6 +1,6 @@
-import { Controllers } from "./controller"
+import { Controller } from "./controller";
 
-export abstract class ResourceController extends Controllers.Controller {
+export abstract class ResourceController extends Controller {
 
   /**
    * Returns a list of all objects. A page number and limit can also
