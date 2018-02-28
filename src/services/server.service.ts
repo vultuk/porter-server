@@ -15,6 +15,12 @@ export class Server {
     constructor(private serverConfig: ServerConfig) {
         this.app = express();
 
+        if (serverConfig && serverConfig.uses && serverConfig.uses.length > 0) {
+            serverConfig.uses.forEach(item => {
+                this.app.use(item);
+            });
+        }
+
         if (this.serverConfig.markdown !== undefined && this.serverConfig.markdown.directory !== undefined) {
             console.log(this.serverConfig.markdown);
             this.app.set('view engine', 'ejs');

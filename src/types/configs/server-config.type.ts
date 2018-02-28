@@ -9,4 +9,5 @@ export class ServerConfig {
     database?: any;
     serviceStatus?: string;
     markdown?: MarkdownConfig;
+    uses?: any[];
 }
