@@ -21,10 +21,10 @@
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.1",
     "ejs": "^2.5.6",
-    "express": "^4.15.2",
+    "express": "^4.15.5",
     "express-markdown": "github:vultuk/express-markdown",
     "pg-promise": "^5.9.7",
-    "pusher": "^1.5.1",
+    "pusher": "^2.0.0",
     "request": "^2.81.0",
     "rimraf": "^2.5.4",
     "typescript": "^2.4.1"
