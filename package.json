@@ -10,7 +10,8 @@
   "typings": "dist/index.d.ts",
   "scripts": {
     "compile": "rimraf dist && tsc -d",
-    "prepublish": "npm run compile"
+    "prepublish": "npm run snyk-protect && npm run compile",
+    "snyk-protect": "snyk protect"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +28,8 @@
     "pusher": "^1.5.1",
     "request": "^2.81.0",
     "rimraf": "^2.5.4",
-    "typescript": "^2.4.1"
-  }
+    "typescript": "^2.4.1",
+    "snyk": "^1.317.0"
+  },
+  "snyk": true
 }
