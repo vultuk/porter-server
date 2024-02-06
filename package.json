@@ -28,7 +28,7 @@
     "express-markdown": "github:vultuk/express-markdown",
     "pg-promise": "8.0.0",
     "pusher": "1.5.1",
-    "request": "2.81.0",
+    "request": "2.88.2",
     "rimraf": "2.5.4",
     "typescript": "2.4.1"
   }
